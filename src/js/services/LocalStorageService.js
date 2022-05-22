@@ -2,7 +2,7 @@ class LocalStorageService {
     static get(name) {
         const valueStr = localStorage.getItem(name);
         if(valueStr === null){
-            return null; // Nors valueStr yra null, grąžiname reikšmę null - dėl aiškumo,skaitomumo
+            return null;
         }
         const value  = JSON.parse(valueStr);
 

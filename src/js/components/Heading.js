@@ -10,7 +10,7 @@ class Heading extends WrapperComponent {
         );
 
         if (!types.includes(type)) {
-            throw new Error('Incorrrect heading size');
+            throw new Error('Incorrect heading size');
         }
     }
 }
