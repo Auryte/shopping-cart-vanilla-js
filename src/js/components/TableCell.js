@@ -1,22 +1,24 @@
-import WrapperComponent from "../libs/WrapperComponent.js";
+import Component from "../libs/Component.js";
 
-const types =['th', 'td'];
+const types = ['th', 'td'];
 
-class TableCell extends WrapperComponent {
-    type;
-    attrClass;
+class TableCell extends Component {
 
-    constructor(type, innerText, attrClass ) {
-        super(document.createElement(type),
-         document.createTextNode(innerText));
-        this.attrClass = attrClass;
+    constructor({ className, content }, {type = 'td'}) {
         if (!types.includes(type)) {
             throw new Error('Incorrect table element');
         }
-        if (!(attrClass === undefined)) this.init();
+        super(document.createElement(type), { className, content });
+
     }
-    init() {
-        this.htmlElement.className = this.attrClass;
+
+    updateOnPropsChange() {
+        const { className, content } = this.props;
+
+        this.htmlElement.innerHTML = '';
+        this.htmlElement.append(content instanceof Component ? content.htmlElement : content);
+        if (className) this.htmlElement.className = className;
     }
+
 }
 export default TableCell;

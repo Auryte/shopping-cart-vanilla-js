@@ -1,16 +1,18 @@
-import WrapperComponent from "../libs/WrapperComponent.js";
+import Component from "../libs/Component.js";
 
-class Label extends WrapperComponent {
-    attrFor;
-    
-    constructor(innerText, attrFor) {
-        super(document.createElement('label'),
-            document.createTextNode(innerText));
-        this.attrId = attrFor;
+class Label extends Component {
+    attributeFor;
+    innerText;
+
+    constructor({innerText, attributeFor}) {
+        super(document.createElement('label'));
+        this.attributeFor = attributeFor;
+        this.innerText = innerText;
         this.init();
     }
     init() {
-        this.htmlElement.setAttribute('for', this.attrFor);
+        this.htmlElement.setAttribute('for', this.attributeFor);
+        this.htmlElement.append(this.innerText ? document.createTextNode(this.innerText) : undefined)
     }
 }
 

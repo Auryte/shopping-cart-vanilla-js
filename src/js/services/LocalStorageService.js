@@ -1,20 +1,21 @@
 class LocalStorageService {
-    static get(name) {
+    get(name) {
         const valueStr = localStorage.getItem(name);
-        if(valueStr === null){
+        if (valueStr === null) {
             return null;
         }
-        const value  = JSON.parse(valueStr);
+        const value = JSON.parse(valueStr);
 
         return value;
     }
 
-    static set(name, value) {
+    set(name, value) {
+        console.log("value", value)
         const valueStr = JSON.stringify(value);
         localStorage.setItem(name, valueStr);
     }
 
-    static remove(name) {
+    remove(name) {
         localStorage.removeItem(name);
     }
 }

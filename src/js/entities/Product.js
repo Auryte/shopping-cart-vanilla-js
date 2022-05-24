@@ -26,6 +26,17 @@ class Product {
 
     get quantity() { return this.#quantity; }
 
+    get props() {
+        const formattedProps = {
+            id: this.#id,
+            title: this.#title,
+            price: this.#price,
+            quantity: this.#quantity
+        };
+
+        return formattedProps;
+    }
+
     set id(newId) {
         if (this.#id !== undefined) {
             throw new Error('Can not change Product.id, id already exists.');
@@ -50,21 +61,22 @@ class Product {
         if (typeof newPrice !== "number") {
             throw new Error('Product.price must be a number');
         }
-        if (newPrice < 1){
+        if (newPrice < 1) {
             throw new Error('Product.price can not be empty');
         }
         this.#price = newPrice;
     }
-    
+
     set quantity(newQuantity) {
         if (typeof newQuantity !== "number") {
             throw new Error('Product.quantity must be a number');
         }
-        if (newQuantity < 1){
+        if (newQuantity < 1) {
             throw new Error('Product.quantity can not be empty');
         }
         this.#quantity = newQuantity;
     }
+
 }
 
 export default Product;

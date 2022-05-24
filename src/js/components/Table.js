@@ -1,15 +1,20 @@
-import WrapperComponent from "../libs/WrapperComponent.js";
+import Component from "../libs/Component.js";
 
-class Table extends WrapperComponent {
-    attrId;
+class Table extends Component {
+    id;
+    childNodes;
 
-    constructor(childNode, attrId) {
-        super(document.createElement('table'), childNode);
-        this.attrId = attrId;
+    constructor({childNodes, id}) {
+        super(document.createElement('table'));
+        this.id = id;
+        this.childNodes = childNodes;
         this.init();
     }
     init() {
-        this.htmlElement.setAttribute('id', this.attrId);
+        this.htmlElement.setAttribute('id', this.id);
+       if( this.childNodes instanceof Array && this.childNodes.every(child => child instanceof Component)){
+        this.childNodes.map(child => this.htmlElement.append(child.htmlElement))
+       }
     }
 }
 export default Table;

@@ -25,7 +25,7 @@ class ProductCollection {
         if(!(newProduct instanceof Product)){
             throw new Error('klaida')
         }
-        this.#data.push(newProduct);
+        this.#data.push(Product.clone(newProduct));
     }
 
     removeById(id) {

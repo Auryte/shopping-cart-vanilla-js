@@ -4,21 +4,21 @@ const types = ['text', 'number'];
 
 class Input extends Component {
     type;
-    attrId;
+    id;
 
-    constructor(type, attrId) {
+    constructor({type, id}) {
         super(document.createElement('input'));
         if (!types.includes(type)) {
             throw new Error('Incorrrect input type');
         }
         this.type = type;
-        this.attrId = attrId;
+        this.id = id;
         this.init();
     }
 
     init() {
         this.htmlElement.setAttribute('type', this.type);
-        this.htmlElement.setAttribute('id', this.attrId);
+        this.htmlElement.setAttribute('id', this.id);
     }
 }
 

@@ -27,81 +27,101 @@ const addProduct = (data) => {
     dataValues.unshift(uid());
     const [id, title, price, quantity] = dataValues;
     const product = new Product(id, title, price, quantity);
-    const productCopy = Product.clone(product);
-    console.log("product", product);
-    console.log("productCopy", productCopy);
-
-    const productCollection = new ProductCollection([]);
-    productCollection.add(productCopy);
-    console.log(productCollection.data);
-    store.set('products', productCopy);
-    return productCopy;
+    // const productCollection = new ProductCollection([]);
+    // productCollection.add(product);
+    // console.log(productCollection.data);
+    store.set('products', product.props);
+    return product;
 }
 
-const headingFormSection = new Heading('h2', 'Add new Product');
-const headingForTable = new Heading('h2', 'Product list');
-const labelTitle = new Label('Title', 'product-title-input');
-const labelPrice = new Label('Price', 'product-price-input');
-const labelQuantity = new Label('Quantity', 'product-quantity-input');
-const inputTitle = new Input('text', 'product-title-input');
-const inputPrice = new Input('number', 'product-price-input');
-const inputQuantity = new Input('number', 'product-quantity-input');
-const buttonAddProduct = new Button('Add Product');
-const buttonRemove = new Button('Remove');
+const headingFormSection = new Heading({ type: 'h2', innerText: 'Add new Product' });
+const headingForTable = new Heading({ type: 'h2', innerText: 'Product list' });
+const labelTitle = new Label({ innerText: 'Title', attributeFor: 'product-title-input' });
+const labelPrice = new Label({ innerText: 'Price', attributeFor: 'product-price-input' });
+const labelQuantity = new Label({ innerText: 'Quantity', attributeFor: 'product-quantity-input' });
+const inputTitle = new Input({ type: 'text', id: 'product-title-input' });
+const inputPrice = new Input({ type: 'number', id: 'product-price-input' });
+const inputQuantity = new Input({ type: 'number', id: 'product-quantity-input' });
+const buttonAddProduct = new Button({ innerText: 'Add Product', className: 'btn', type: 'submit' });
+const buttonRemove = new Button({
+    innerText: 'Remove', className: 'btn delete', type: 'button', onClick: () => {
+        tableThTitle.setNewProps({
+            content: 'PAKEISTA'
+        })
+    }
+});
 
-const formAddProduct = new Form([
-    labelTitle.htmlElement,
-    inputTitle.htmlElement,
-    labelPrice.htmlElement,
-    inputPrice.htmlElement,
-    labelQuantity.htmlElement,
-    inputQuantity.htmlElement,
-    buttonAddProduct.htmlElement,
-], 'product-form', addProduct);
-const tableThTitle = new TableCell('th', 'Title');
-const tableThPrice = new TableCell('th', 'Price');
-const tableThQuantity = new TableCell('th', 'Quantity');
-const tableThSum = new TableCell('th', 'Subtotal');
-const tableThRemove = new TableCell('th', 'Remove');
+const formAddProduct = new Form({
+    childNode: [
+        labelTitle,
+        inputTitle,
+        labelPrice,
+        inputPrice,
+        labelQuantity,
+        inputQuantity,
+        buttonAddProduct,
+    ],
+    id: 'product-form',
+    onSubmit: addProduct
+});
 
-const tableTdTitle = new TableCell('td', 'Title');
-const tableTdPrice = new TableCell('td', 'Price');
-const tableTdId = new TableCell('td', 'Id', 'invisible');
-const tableTdQuantity = new TableCell('td', 'Quantity');
-const tableTdSum = new TableCell('td', 'Subtotal');
-const tableTdButton = new TableCell('td', 'Remove');
+const tableThTitle = new TableCell({ content: 'Title' }, { type: 'th' });
+const tableThPrice = new TableCell({ content: 'Price' }, { type: 'th' });
+const tableThQuantity = new TableCell({ content: 'Quantity' }, { type: 'th' });
+const tableThSum = new TableCell({ content: 'Subtotal' }, { type: 'th' });
+const tableThRemove = new TableCell({ content: 'Remove' }, { type: 'th' });
 
-const tableHeadRow = new TableRow([
-    tableThTitle.htmlElement,
-    tableThPrice.htmlElement,
-    tableThQuantity.htmlElement,
-    tableThSum.htmlElement,
-    tableThRemove.htmlElement
-]);
-const tableBodyRow = new TableRow([
-    tableTdId.htmlElement,
-    tableTdTitle.htmlElement,
-    tableTdPrice.htmlElement,
-    tableTdQuantity.htmlElement,
-    tableTdSum.htmlElement,
-    tableTdButton.htmlElement
-], 'product-list-row');
+const tableTdTitle = new TableCell({ content: 'Title' }, {});
+const tableTdPrice = new TableCell({ content: 'Price' }, {});
+const tableTdId = new TableCell({ content: 'Id', className: 'invisible' }, {});
+const tableTdQuantity = new TableCell({ content: 'Quantity' }, {});
+const tableTdSum = new TableCell({ content: 'Subtotal' }, {});
+const tableTdButton = new TableCell({ content: buttonRemove }, {});
 
-const tableHead = new TableElement('thead', tableHeadRow.htmlElement);
-const tableBody = new TableElement('tbody', tableBodyRow.htmlElement, 'product-list');
-const tableProducts = new Table([
-    tableHead.htmlElement,
-    tableBody.htmlElement
-], 'product-list-table');
+const tableHeadRow = new TableRow({
+    childNode: [
+        tableThTitle,
+        tableThPrice,
+        tableThQuantity,
+        tableThSum,
+        tableThRemove
+    ]
+});
+const tableBodyRow = new TableRow({
+    childNode: [
+        tableTdId,
+        tableTdTitle,
+        tableTdPrice,
+        tableTdQuantity,
+        tableTdSum,
+        tableTdButton
+    ],
+    className: 'product-list-row'
+});
 
-const sectionOfForm = new Section([
-    headingFormSection.htmlElement,
-    formAddProduct.htmlElement,
-]);
-const sectionOfTable = new Section([
-    headingForTable.htmlElement,
-    tableProducts.htmlElement
-]);
+const tableHead = new TableElement({ content: tableHeadRow }, { type: 'thead' });
+const tableBody = new TableElement({ content: tableBodyRow }, { type: 'tbody', id: 'product-list' });
+const tableProducts = new Table({
+    childNodes: [
+        tableHead,
+        tableBody
+    ],
+    id: 'product-list-table'
+});
+
+const sectionOfForm = new Section({
+    childNode: [
+        headingFormSection,
+        formAddProduct
+    ],
+    className: 'section-form'
+});
+const sectionOfTable = new Section({
+    childNode: [
+        headingForTable,
+        tableProducts
+    ]
+});
 rootElement.append(
     sectionOfForm.htmlElement,
     sectionOfTable.htmlElement
