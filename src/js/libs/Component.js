@@ -1,16 +1,28 @@
 class Component {
+    static isInstance(val) {
+        return val instanceof Component;
+    }
+
+    static isArrayOfInstances(arr) {
+        return arr instanceof Array && arr.every(x => x instanceof Component);
+    }
+
     htmlElement;
     props; 
-    
+
     constructor(htmlElement, props = {}) {
         if (!(htmlElement instanceof HTMLElement)) {
             throw new Error('htmlElement must be of prototype HTMLElement');
         }
         this.htmlElement = htmlElement;
         this.props = props;
-        if(this.updateOnPropsChange){
+        if (this.updateOnPropsChange) {
             this.updateOnPropsChange();
         }
+    }
+
+    setChildrenComponents(...children) {
+            this.htmlElement.append(...children.map(x => x.htmlElement))
     }
 
     setNewProps(newProps) {

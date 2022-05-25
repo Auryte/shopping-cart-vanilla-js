@@ -2,30 +2,25 @@ import Component from "../libs/Component.js";
 
 class TableRow extends Component {
     className;
-    childNode;
+    children;
 
-    constructor({childNode, className}) {
+    constructor({childNode: children, className }) {
         super(document.createElement('tr'));
         this.className = className;
-        if (childNode !== undefined) {
-            this.isComponent = childNode instanceof Component;
-            this.isArrayOfComponents = childNode instanceof Array && childNode.every(x => x instanceof Component);
+        if (children !== undefined) {
+            const isComponent = Component.isInstance(children);
+            const isArrayOfComponents = Component.isArrayOfInstances(children);
 
-            if (!(this.isComponent || this.isArrayOfComponents)) {
-                throw new Error('Children should be of prototype Node');
+            if (!(isComponent || isArrayOfComponents)) {
+                throw new Error('Children should be of prototype Component');
             }
-            this.childNode = childNode;
-            
+            this.children = children;
         }
         this.init();
     }
     init() {
-        this.htmlElement.className = this.className;
-        if (this.isArrayOfComponents) {
-            this.childNode.map(child => this.htmlElement.append(child.htmlElement));
-        } else {
-            this.htmlElement.appendChild(this.childNode.htmlElement);
-        }
+        this.setChildrenComponents(...this.children);
     }
 }
+
 export default TableRow;

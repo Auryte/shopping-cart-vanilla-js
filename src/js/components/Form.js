@@ -1,45 +1,48 @@
 import Component from "../libs/Component.js";
 
+const htmlFieldTags = ['input', 'select', 'textarea'];
+
 class Form extends Component {
-    onSubmit;
     id;
-    findInputElements;
+    onSubmit;
+    fields;
 
-    constructor({ childNode, id, onSubmit }) {
+    constructor({ childNode: children, id, onSubmit }) {
         super(document.createElement('form'));
-        if (childNode !== undefined) {
-            this.isComponent = childNode instanceof Component;
-            this.isArrayOfComponents = childNode instanceof Array && childNode.every(x => x instanceof Component);
-
-            if (!(this.isComponent || this.isArrayOfComponents)) {
+        if (children !== undefined) {
+            const isComponent = Component.isInstance(children);
+            const isArrayOfComponents = Component.isArrayOfInstances(children);
+            if (!(isComponent || isArrayOfComponents)) {
                 throw new Error('Children should be of prototype Component');
             }
-            this.childNode = childNode;
+            this.children = children;
             this.id = id;
-
         }
-        const findInputElements = this.childNode.filter(element => element.htmlElement.tagName == 'INPUT');
-        this.findInputElements = findInputElements;
         this.onSubmit = onSubmit;
         this.init();
     }
 
+    get values() {
+        return this.fields.reduce((prevValues, field) => ({
+            ...prevValues,
+            [field.name]: field.value
+        }), {})
+    }
+
     clearInputs = () => {
-        this.findInputElements.map((input) => {
-            input.htmlElement.value = ''
+        this.fields.map((input) => {
+            input.value = ''
         })
     }
 
     init() {
         this.htmlElement.setAttribute("id", this.id);
-        if (this.isArrayOfComponents) {
-            this.childNode.map(child => this.htmlElement.append(child.htmlElement));
-        } else {
-            this.htmlElement.appendChild(this.childNode.htmlElement);
-        }
+        this.setChildrenComponents(...this.children);
+
+        this.fields = Array.from(this.htmlElement.querySelectorAll(htmlFieldTags.join(',')));
         this.htmlElement.addEventListener('submit', (e) => {
             e.preventDefault();
-            this.onSubmit(this.findInputElements.map(el => el.htmlElement.value));
+            this.onSubmit(this.values);
             this.clearInputs();
         });
     }

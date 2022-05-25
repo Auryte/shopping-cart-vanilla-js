@@ -1,10 +1,19 @@
 import Product from '../entities/Product.js';
+import LocalStorageService from '../services/LocalStorageService.js';
+
+const uid = function () {
+    return Date.now().toString(36) + Math.random().toString(36).substring(2);
+}
 
 class ProductCollection {
     #data;
 
-    constructor(data) {
-        this.data = data;
+    constructor() {
+        const store = new LocalStorageService;
+        const products = store.get('products');
+        if (products) products.map(Product.clone);
+        this.store = store;
+        this.#data = products ?? [];
     }
 
     get data() {
@@ -20,12 +29,21 @@ class ProductCollection {
         }
         this.#data = newData.map(Product.clone);
     }
+    
+    syncFromLocalStorage() {
+        this.store.remove('products');
+        this.store.set('products', this.#data);
+    }
 
-    add(newProduct) {
-        if(!(newProduct instanceof Product)){
-            throw new Error('klaida')
-        }
-        this.#data.push(Product.clone(newProduct));
+    add(productProps) {
+        const createdId = uid();
+        productProps = {id: createdId, ...productProps};
+        const {id, title, price, quantity} = productProps;
+        const product = new Product(id, title, price, quantity);
+        console.log("product", product.props)
+        this.#data.push(product.props);
+        console.log(this.#data)
+        this.syncFromLocalStorage();
     }
 
     removeById(id) {
@@ -34,6 +52,8 @@ class ProductCollection {
             throw new Error('There is no product with such id')
         }
         this.#data.splice(productIndex, 1);
+        this.syncFromLocalStorage();
+
     }
 
     updateById(id, propsUpdate) {
@@ -58,6 +78,8 @@ class ProductCollection {
         if (quantity !== undefined) {
             productRef.quantity = quantity;
         }
+        this.syncFromLocalStorage();
+
     }
 }
 
