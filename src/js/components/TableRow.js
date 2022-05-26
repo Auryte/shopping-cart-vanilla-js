@@ -4,7 +4,7 @@ class TableRow extends Component {
     className;
     children;
 
-    constructor({childNode: children, className }) {
+    constructor({ content: children, className }) {
         super(document.createElement('tr'));
         this.className = className;
         if (children !== undefined) {
@@ -18,7 +18,9 @@ class TableRow extends Component {
         }
         this.init();
     }
+    
     init() {
+        if (this.className) this.htmlElement.className = this.className;
         this.setChildrenComponents(...this.children);
     }
 }

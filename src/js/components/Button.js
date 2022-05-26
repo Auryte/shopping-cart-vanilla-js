@@ -6,13 +6,12 @@ class Button extends Component {
     type;
     onClick;
 
-    constructor({innerText, className, type = 'button', onClick}) {
+    constructor({ innerText, className, type = 'button', onClick }) {
         super(document.createElement('button'));
         this.className = className;
         this.innerText = innerText;
         this.type = type;
-        if(onClick) this.onClick = onClick;
-
+        if (onClick) this.onClick = onClick;
         this.init();
     }
 
@@ -20,7 +19,7 @@ class Button extends Component {
         this.htmlElement.innerText = this.innerText;
         this.htmlElement.className = this.className;
         this.htmlElement.type = this.type;
-        if(this.onClick)  this.htmlElement.addEventListener('click', this.onClick);
+        if (this.onClick) this.htmlElement.addEventListener('click', this.onClick);
     }
 }
 

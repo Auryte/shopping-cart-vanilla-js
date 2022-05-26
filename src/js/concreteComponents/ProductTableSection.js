@@ -2,83 +2,65 @@ import Button from '../components/Button.js';
 import Heading from '../components/Heading.js';
 import Table from '../components/Table.js';
 import TableCell from '../components/TableCell.js';
-import TableElement from '../components/TableElement.js';
 import TableRow from '../components/TableRow.js';
 import Component from '../libs/Component.js';
 
 class ProductTableSection extends Component {
-    productCollectionData;
+    table;
+    onClick;
+    onPropChange;
 
-    constructor({ productCollectionData }) {
-        super(document.createElement('section'));
-        this.productCollectionData = productCollectionData;
+    constructor({ onClick, onPropChange }, props) {
+        super(document.createElement('section'), props);
+        this.onClick = onClick;
+        this.table = new Table({
+            headers: ['Title', 'Price', 'Quantity', 'SubTotal', 'Remove'],
+            className: 'product-list-table'
+        });
+        this.onPropChange = onPropChange;
         this.init();
     }
+
     init() {
+        const { products } = this.props;
         const headingForTable = new Heading({ type: 'h2', innerText: 'Product list' });
-        const buttonRemove = new Button({
-            innerText: 'Remove', className: 'btn delete', type: 'button', onClick: () => {
-                tableThTitle.setNewProps({
-                    content: 'PAKEISTA'
-                })
-            }
-        });
-        const tableThTitle = new TableCell({ content: 'Title' }, { type: 'th' });
-        const tableThPrice = new TableCell({ content: 'Price' }, { type: 'th' });
-        const tableThQuantity = new TableCell({ content: 'Quantity' }, { type: 'th' });
-        const tableThSum = new TableCell({ content: 'Subtotal' }, { type: 'th' });
-        const tableThRemove = new TableCell({ content: 'Remove' }, { type: 'th' });
+        this.setChildrenComponents(headingForTable, this.table);
+        this.updateOnPropsChange();
+    }
 
-        const tableHeadRow = new TableRow({
-            childNode: [
-                tableThTitle,
-                tableThPrice,
-                tableThQuantity,
-                tableThSum,
-                tableThRemove
-            ]
-        });
-
-        const tableBodyRow = this.productCollectionData.map(({ id, title, price, quantity }) => {
-            const tableTdTitle = new TableCell({ content: title }, {});
-            const tableTdPrice = new TableCell({ content: price }, {});
-            const tableTdId = new TableCell({ content: id, className: 'invisible' }, {});
-            const tableTdQuantity = new TableCell({ content: quantity }, {});
+    updateOnPropsChange() {
+        const { products } = this.props;
+       
+        const tbodyContent = products.map(({ id, title, price, quantity }) => {
+            const button = new Button({
+                innerText: 'Remove',
+                className: 'btn ',
+                type: 'button',
+                onClick: () => this.onClick(id)
+            });
+            const tableTdTitle = new TableCell({ content: title, onChange: (value) => this.onPropChange(id, 'title', value) }, {});
+            const tableTdPrice = new TableCell({ content: price, onChange: (value) => this.onPropChange(id, 'price', Number(value)) }, {});
+            const tableTdId = new TableCell({ className: 'invisible', content: id, }, {});
+            const tableTdQuantity = new TableCell({ content: quantity, onChange: (value) => this.onPropChange(id, 'quantity', Number(value)) }, {});
             const tableTdSum = new TableCell({ content: price * quantity }, {});
-            const tableTdButton = new TableCell({ content: buttonRemove }, {});
+            const tableTdButton = new TableCell({ content: button }, {});
+
             const tableBodyRow = new TableRow({
-                childNode: [
+                content: [
                     tableTdId,
                     tableTdTitle,
                     tableTdPrice,
                     tableTdQuantity,
                     tableTdSum,
-                    tableTdButton
+                    tableTdButton,
                 ],
                 className: 'product-list-row'
             });
             return tableBodyRow;
-        })
-
-
-        const tableHead = new TableElement( { childNode : [tableHeadRow], type: 'thead' });
-        const tableBody = new TableElement(
-            {
-                childNode: [
-                    ...tableBodyRow
-                ],
-                type: 'tbody',
-                id: 'product-list'
-            });
-        const tableProducts = new Table({
-            childNode: [
-                tableHead,
-                tableBody
-            ],
-            id: 'product-list-table'
         });
-        this.setChildrenComponents(headingForTable, tableProducts);
-    }
 
+        this.table.setNewProps({ tbodyContent })
+    }
 }
+
 export default ProductTableSection;

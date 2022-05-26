@@ -8,7 +8,7 @@ class Component {
     }
 
     htmlElement;
-    props; 
+    props;
 
     constructor(htmlElement, props = {}) {
         if (!(htmlElement instanceof HTMLElement)) {
@@ -16,13 +16,10 @@ class Component {
         }
         this.htmlElement = htmlElement;
         this.props = props;
-        if (this.updateOnPropsChange) {
-            this.updateOnPropsChange();
-        }
     }
 
     setChildrenComponents(...children) {
-            this.htmlElement.append(...children.map(x => x.htmlElement))
+        this.htmlElement.append(...children.map(x => x.htmlElement))
     }
 
     setNewProps(newProps) {

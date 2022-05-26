@@ -1,5 +1,5 @@
 class LocalStorageService {
-    get(name) {
+    static get(name) {
         const valueStr = localStorage.getItem(name);
         if (valueStr === null) {
             return null;
@@ -9,13 +9,12 @@ class LocalStorageService {
         return value;
     }
 
-    set(name, value) {
-        console.log("value", value)
+    static set(name, value) {
         const valueStr = JSON.stringify(value);
         localStorage.setItem(name, valueStr);
     }
 
-    remove(name) {
+    static remove(name) {
         localStorage.removeItem(name);
     }
 }

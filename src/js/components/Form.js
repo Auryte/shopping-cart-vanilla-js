@@ -3,11 +3,11 @@ import Component from "../libs/Component.js";
 const htmlFieldTags = ['input', 'select', 'textarea'];
 
 class Form extends Component {
-    id;
+    className;
     onSubmit;
     fields;
 
-    constructor({ childNode: children, id, onSubmit }) {
+    constructor({ content: children, className, onSubmit }) {
         super(document.createElement('form'));
         if (children !== undefined) {
             const isComponent = Component.isInstance(children);
@@ -16,7 +16,7 @@ class Form extends Component {
                 throw new Error('Children should be of prototype Component');
             }
             this.children = children;
-            this.id = id;
+            this.className = className;
         }
         this.onSubmit = onSubmit;
         this.init();
@@ -36,9 +36,8 @@ class Form extends Component {
     }
 
     init() {
-        this.htmlElement.setAttribute("id", this.id);
+        this.htmlElement.className = this.className;
         this.setChildrenComponents(...this.children);
-
         this.fields = Array.from(this.htmlElement.querySelectorAll(htmlFieldTags.join(',')));
         this.htmlElement.addEventListener('submit', (e) => {
             e.preventDefault();

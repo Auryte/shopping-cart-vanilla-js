@@ -19,17 +19,19 @@ main{
 .header-title{
   margin-top: 50px;
   font-weight: 400;
-  font-size: 3rem;
+  font-size: 2rem;
 }
-#product-form{
+.product-form{
   display: flex;
+  flex-direction: column;
   align-content: center;
   justify-content: space-evenly;
   width: 100%;
+  min-height: 280px;
 }
 input{
   width: 100%;
-  margin: 0 10px;
+  padding: 6px;
 }
 .invisible{
   display: none;
@@ -49,7 +51,7 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#product-list-table{
+.product-list-table{
 width: 100%;
 text-align: left;
 }
@@ -114,4 +116,23 @@ text-align: left;
 
     .section-test{
       border: 5px solid magenta
+    }
+
+    @media  screen and (min-width: 800px) {
+      .product-form{
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: space-evenly;
+        width: 100%;
+        min-height: fit-content;
+    }
+    input{
+      margin: 0 10px;
+    }
+    .header-title{
+      margin-top: 50px;
+      font-weight: 400;
+      font-size: 3rem;
+  }
     }

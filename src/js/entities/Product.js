@@ -2,7 +2,6 @@ class Product {
     static clone(originalProduct) {
         const { id, title, price, quantity } = originalProduct;
         const productCopy = new Product(id, title, price, quantity);
-
         return productCopy;
     }
 
@@ -42,7 +41,7 @@ class Product {
             throw new Error('Can not change Product.id, id already exists.');
         };
         if (typeof newId !== 'string') {
-            throw new Error('Turi but string.');
+            throw new Error('Product.id must be string.');
         }
         this.#id = newId;
     }

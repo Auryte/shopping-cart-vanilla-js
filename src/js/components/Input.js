@@ -6,7 +6,7 @@ class Input extends Component {
     type;
     id;
     name;
-    
+
     constructor({ type, id, name }) {
         super(document.createElement('input'));
         if (!types.includes(type)) {

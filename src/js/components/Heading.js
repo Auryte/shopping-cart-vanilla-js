@@ -6,7 +6,7 @@ class Heading extends Component {
     type;
     innerText;
 
-    constructor({type, innerText}) {
+    constructor({ type, innerText }) {
         if (!types.includes(type)) {
             throw new Error('Incorrrect heading size');
         }
@@ -14,9 +14,9 @@ class Heading extends Component {
         this.innerText = innerText;
         this.init();
     }
+
     init() {
         this.htmlElement.append(this.innerText ? document.createTextNode(this.innerText) : undefined);
-
     }
 }
 
