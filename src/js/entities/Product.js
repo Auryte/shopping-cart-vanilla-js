@@ -41,7 +41,7 @@ class Product {
             throw new Error('Can not change Product.id, id already exists.');
         };
         if (typeof newId !== 'string') {
-            throw new Error('Product.id must be string.');
+            throw new Error('Turi but string.');
         }
         this.#id = newId;
     }

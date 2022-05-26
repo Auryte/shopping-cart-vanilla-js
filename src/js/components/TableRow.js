@@ -13,7 +13,7 @@ class TableRow extends Component {
 
             if (!(isComponent || isArrayOfComponents)) {
                 throw new Error('Children should be of prototype Component');
-            }
+            };
             this.children = children;
         }
         this.init();

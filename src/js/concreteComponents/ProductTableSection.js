@@ -15,22 +15,27 @@ class ProductTableSection extends Component {
         this.onClick = onClick;
         this.table = new Table({
             headers: ['Title', 'Price', 'Quantity', 'SubTotal', 'Remove'],
-            className: 'product-list-table'
+            className: 'product-list-table',
         });
+        this.productSumHeading = new Heading({ type: 'h3', innerText: '' });
         this.onPropChange = onPropChange;
         this.init();
     }
 
     init() {
-        const { products } = this.props;
         const headingForTable = new Heading({ type: 'h2', innerText: 'Product list' });
-        this.setChildrenComponents(headingForTable, this.table);
+        this.setChildrenComponents(
+            headingForTable,
+            this.table,
+            this.productSumHeading
+        );
         this.updateOnPropsChange();
     }
 
     updateOnPropsChange() {
         const { products } = this.props;
-       
+        const basketSubtotal = products.reduce((sum, product) => sum + product.price * product.quantity, 0);
+
         const tbodyContent = products.map(({ id, title, price, quantity }) => {
             const button = new Button({
                 innerText: 'Remove',
@@ -40,14 +45,12 @@ class ProductTableSection extends Component {
             });
             const tableTdTitle = new TableCell({ content: title, onChange: (value) => this.onPropChange(id, 'title', value) }, {});
             const tableTdPrice = new TableCell({ content: price, onChange: (value) => this.onPropChange(id, 'price', Number(value)) }, {});
-            const tableTdId = new TableCell({ className: 'invisible', content: id, }, {});
             const tableTdQuantity = new TableCell({ content: quantity, onChange: (value) => this.onPropChange(id, 'quantity', Number(value)) }, {});
             const tableTdSum = new TableCell({ content: price * quantity }, {});
             const tableTdButton = new TableCell({ content: button }, {});
 
             const tableBodyRow = new TableRow({
                 content: [
-                    tableTdId,
                     tableTdTitle,
                     tableTdPrice,
                     tableTdQuantity,
@@ -59,7 +62,8 @@ class ProductTableSection extends Component {
             return tableBodyRow;
         });
 
-        this.table.setNewProps({ tbodyContent })
+        this.table.setNewProps({ tbodyContent });
+        this.productSumHeading.setNewProps({ innerText: `Basket Subtotal: ${basketSubtotal},-` });
     }
 }
 

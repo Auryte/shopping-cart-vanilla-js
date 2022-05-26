@@ -8,7 +8,7 @@ class TableElement extends Component {
     constructor({ type = 'tbody' }, props) {
         if (!types.includes(type)) {
             throw new Error('Incorrect table element');
-        }
+        };
         super(document.createElement(type), props);
         if (props && props.content !== undefined) {
             const isComponent = Component.isInstance(props.content);
@@ -18,13 +18,14 @@ class TableElement extends Component {
             }
             this.props = props;
             this.updateOnPropsChange();
-        }
+        };
     }
 
     updateOnPropsChange() {
         const { content } = this.props;
+        const childrenComponents = content instanceof Array ? content : [content];
         this.htmlElement.innerHTML = '';
-        this.htmlElement.append(content instanceof Component ? content.htmlElement : this.setChildrenComponents(...content));
+        this.setChildrenComponents(...childrenComponents);
     }
 }
 

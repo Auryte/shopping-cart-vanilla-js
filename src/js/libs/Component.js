@@ -13,13 +13,13 @@ class Component {
     constructor(htmlElement, props = {}) {
         if (!(htmlElement instanceof HTMLElement)) {
             throw new Error('htmlElement must be of prototype HTMLElement');
-        }
+        };
         this.htmlElement = htmlElement;
         this.props = props;
     }
 
     setChildrenComponents(...children) {
-        this.htmlElement.append(...children.map(x => x.htmlElement))
+        this.htmlElement.append(...children.map(x => x.htmlElement));
     }
 
     setNewProps(newProps) {
@@ -27,7 +27,7 @@ class Component {
         this.props = {
             ...oldProps,
             ...newProps,
-        }
+        };
 
         this.updateOnPropsChange();
     }

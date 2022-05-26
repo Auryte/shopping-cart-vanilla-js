@@ -26,13 +26,13 @@ class Form extends Component {
         return this.fields.reduce((prevValues, field) => ({
             ...prevValues,
             [field.name]: field.value
-        }), {})
+        }), {});
     }
 
     clearInputs = () => {
         this.fields.map((input) => {
             input.value = ''
-        })
+        });
     }
 
     init() {

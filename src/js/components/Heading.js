@@ -16,7 +16,11 @@ class Heading extends Component {
     }
 
     init() {
-        this.htmlElement.append(this.innerText ? document.createTextNode(this.innerText) : undefined);
+        this.htmlElement.innerText = this.innerText;
+    }
+
+    updateOnPropsChange() {
+        this.htmlElement.innerText = this.props.innerText;
     }
 }
 

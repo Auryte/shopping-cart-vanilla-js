@@ -15,14 +15,16 @@ class TableCell extends Component {
     }
 
     init() {
-        this.htmlElement.addEventListener('dblclick', (e) => {
-            this.htmlElement.setAttribute('contentEditable', 'true')
-            e.target.focus();
-        })
-        this.htmlElement.addEventListener('blur', (e) => {
-            this.onChange(e.target.innerHTML);
-            this.htmlElement.removeAttribute('contentEditable')
-        })
+        if (this.onChange) {
+            this.htmlElement.addEventListener('click', (e) => {
+                this.htmlElement.setAttribute('contentEditable', 'true');
+                e.target.focus();
+            });
+            this.htmlElement.addEventListener('blur', (e) => {
+                this.onChange(e.target.innerHTML);
+                this.htmlElement.removeAttribute('contentEditable');
+            });
+        };
     }
 
     updateOnPropsChange() {
